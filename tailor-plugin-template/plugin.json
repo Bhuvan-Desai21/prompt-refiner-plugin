@@ -1,0 +1,48 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "name": "my-plugin",
+    "version": "1.0.0",
+    "displayName": "My Plugin",
+    "description": "A brief description of what this plugin does",
+    "author": {
+        "name": "Developer Name",
+        "email": "dev@example.com",
+        "url": "https://github.com/developer"
+    },
+    "repository": "https://github.com/developer/my-plugin",
+    "license": "MIT",
+    "main": "main.py",
+    "minTailorVersion": "0.5.0",
+    "categories": [
+        "tools"
+    ],
+    "keywords": [
+        "example",
+        "template"
+    ],
+    "dependencies": {
+        "python": []
+    },
+    "hooks": {
+        "input.transform": false,
+        "input.validate": false,
+        "process.before_llm": false,
+        "process.after_llm": false,
+        "output.format": false
+    },
+    "commands": [
+        {
+            "id": "myPlugin.hello",
+            "title": "Say Hello",
+            "description": "A simple command that greets the user"
+        }
+    ],
+    "settings": {
+        "greeting": {
+            "type": "string",
+            "description": "Custom greeting message",
+            "default": "Hello",
+            "required": false
+        }
+    }
+}
