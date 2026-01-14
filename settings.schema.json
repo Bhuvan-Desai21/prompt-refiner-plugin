@@ -1,0 +1,17 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://tailor.dev/plugin-settings.schema.json",
+    "title": "Plugin Settings Schema",
+    "description": "JSON Schema for validating plugin settings",
+    "type": "object",
+    "properties": {
+        "greeting": {
+            "type": "string",
+            "description": "Custom greeting message",
+            "default": "Hello",
+            "minLength": 1,
+            "maxLength": 100
+        }
+    },
+    "additionalProperties": false
+}
