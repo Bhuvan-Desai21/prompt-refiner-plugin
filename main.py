@@ -69,29 +69,36 @@ class Plugin(PluginBase):
             self._handle_refine,
             self.name
         )
-        self.logger.debug("Registered refiner.refine command")
+        self.brain.register_command(
+            "refiner.refine_from_ui",
+            self._handle_refine_from_ui,
+            self.name
+        )
+        self.logger.debug("Registered refiner.refine and refiner.refine_from_ui commands")
     
     async def on_client_connected(self) -> None:
         """Called when frontend connects - register UI elements."""
         self.logger.info("Client connected - registering refiner UI")
         
-        # Register the refine button in the toolbar
-        await self.register_toolbar_button(
-            button_id="refiner_btn",
-            icon="sparkles",  # Lucide icon
-            title="Refine Prompt",
-            command="refiner.refine_from_ui"
+        # Register a composer action button (appears in chat input toolbar)
+        self.brain.emit_to_frontend(
+            event_type=EventType.UI_COMMAND,
+            data={
+                "action": "register_action",
+                "id": "prompt-refiner",
+                "icon": "wand-2",  # Magic wand icon
+                "label": "Refine Prompt",
+                "position": 20,
+                "type": "button",
+                "command": "refiner.refine_from_ui",
+                "location": "composer-actionbar"
+            }
         )
         
-        # Register a WebSocket handler for the UI button
-        self.brain.ws_server.register_handler(
-            "refiner.refine_from_ui",
-            self._handle_refine_from_ui
-        )
-        
-        self.notify("Prompt Refiner ready! Click ✨ to refine your prompts.", severity="success")
+        self.logger.info("Registered prompt-refiner composer action")
+        self.notify("Prompt Refiner ready!", severity="success")
     
-    async def _handle_refine_from_ui(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    async def _handle_refine_from_ui(self, **kwargs) -> Dict[str, Any]:
         """Handle refine request from UI - gets text from frontend."""
         # This handler is called when the toolbar button is clicked
         # We need to tell the frontend to send us the current input text
