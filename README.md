@@ -1,128 +1,36 @@
-# Tailor Plugin Template
+# Prompt Refiner Plugin
 
-A template repository for creating Tailor plugins. Fork this repository to start building your own plugin!
+An example [Tailor](https://github.com/AGS-Lab/tailor) plugin that uses AI to refine and improve your prompts before sending them to the LLM.
 
-## Quick Start
+## What It Does
 
-1. **Fork this repository** on GitHub
-2. **Clone your fork** locally
-3. **Update `plugin.json`** with your plugin's metadata
-4. **Implement your plugin** in `main.py`
-5. **Test locally** by copying to a vault's `plugins/` directory
-6. **Submit to Plugin Store** when ready
+✨ **One-Click Prompt Enhancement** — Adds a wand button to the chat composer that takes your rough prompt and transforms it into a clearer, more structured, and more effective query.
 
-## Structure
+**Before:**
+> explain python decorators
 
-```
-my-plugin/
-├── plugin.json           # Plugin manifest (required)
-├── main.py               # Plugin entry point (required)
-├── settings.json         # Default settings
-├── settings.schema.json  # Settings validation schema
-├── README.md             # This file
-├── CONTRIBUTING.md       # Contribution guidelines
-├── LICENSE               # MIT License
-├── .github/
-│   └── workflows/
-│       └── lint.yml      # Automated linting
-└── tests/
-    └── test_plugin.py    # Plugin tests
-```
+**After:**
+> Explain Python decorators with the following: 1) What they are and their purpose, 2) How the @ syntax works, 3) A simple example with code, 4) Common use cases like @property and @staticmethod.
 
-## Plugin Manifest (`plugin.json`)
+## How It Works
 
-Required fields:
+1. Type your rough prompt in the chat input
+2. Click the ✨ wand button in the composer toolbar
+3. The plugin uses the LLM to refine your prompt
+4. Review the improved prompt and send when ready
 
-| Field | Description |
-|-------|-------------|
-| `name` | Unique plugin identifier (lowercase, hyphens) |
-| `version` | Semver version string |
-| `displayName` | Human-readable name |
-| `description` | Brief description |
-| `author` | Author info (name, email, url) |
-| `main` | Entry point file (usually `main.py`) |
+## Requirements
 
-Optional fields:
+- Tailor with an OpenAI API key configured
+- The LLM plugin enabled in your vault
 
-| Field | Description |
-|-------|-------------|
-| `repository` | GitHub repository URL |
-| `minTailorVersion` | Minimum Tailor version required |
-| `categories` | Array of categories (tools, memory, integrations, ui-themes) |
-| `keywords` | Search keywords |
-| `dependencies.python` | Python package dependencies |
-| `hooks` | Which LLM hooks this plugin uses |
-| `commands` | List of commands this plugin registers |
-| `settings` | Settings schema for configuration |
+## Main Repository
 
-## Commands
+This plugin is part of the **Tailor** project.
 
-Register commands in your plugin's `register_commands()` method:
+📦 **Full documentation, source code, and more plugins:**  
+👉 [https://github.com/AGS-Lab/tailor](https://github.com/AGS-Lab/tailor)
 
-```python
-def register_commands(self) -> None:
-    self.brain.register_command(
-        "myPlugin.doSomething",  # Command ID
-        self._handle_do_something,  # Handler function
-        self.name  # Plugin name
-    )
+---
 
-async def _handle_do_something(self, param: str = "", **kwargs) -> Dict[str, Any]:
-    # Your logic here
-    return {"status": "success", "result": param}
-```
-
-## Hooks
-
-Register hooks to extend LLM processing:
-
-| Hook | Purpose | Can Abort? |
-|------|---------|------------|
-| `input.transform` | Modify user message | No |
-| `input.validate` | Filter/validate input | Yes |
-| `process.before_llm` | Inject context (RAG, etc.) | No |
-| `process.after_llm` | Post-process response | No |
-| `output.format` | Format for UI | No |
-
-```python
-def register_hooks(self) -> None:
-    self.register_hook(
-        "process.before_llm",
-        self._inject_context,
-        priority=50  # Lower = runs first
-    )
-
-async def _inject_context(self, ctx: HookContext) -> HookContext:
-    ctx.metadata["my_context"] = "injected data"
-    return ctx
-```
-
-## Lifecycle Hooks
-
-| Method | When Called |
-|--------|-------------|
-| `on_load()` | After all plugins loaded |
-| `on_tick()` | Every 5 seconds |
-| `on_unload()` | Before plugin shutdown |
-
-## Testing Locally
-
-1. Copy your plugin folder to a vault:
-   ```bash
-   cp -r my-plugin/ /path/to/vault/plugins/
-   ```
-
-2. Open the vault in Tailor
-
-3. Check sidecar logs for your plugin initialization
-
-## Submitting to Plugin Store
-
-1. Ensure your plugin passes linting: `flake8 main.py`
-2. Tag your GitHub repo with `tailor-plugin`
-3. Fill out the [submission form](https://tailor.dev/submit-plugin)
-4. Wait for review (usually 1-3 days)
-
-## License
-
-MIT License - see [LICENSE](LICENSE)
+*Licensed under MIT — feel free to use and modify!*
